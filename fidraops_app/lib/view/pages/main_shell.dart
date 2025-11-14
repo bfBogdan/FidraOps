@@ -18,10 +18,24 @@ class MainShell extends StatelessWidget {
     final nav = context.watch<BottomNavBarProvider>();
 
     return Scaffold(
-      body: pages[nav.index],
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: nav.index,
-        onTap: nav.change,
+      body: Stack(
+        children: [
+          // Main content
+          pages[nav.index],
+
+          // Floating navbar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20, // Distance from bottom
+            child: Center(
+              child: BottomNavBar(
+                currentIndex: nav.index,
+                onTap: nav.change,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

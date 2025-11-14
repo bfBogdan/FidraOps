@@ -42,26 +42,3 @@ class MainApp extends StatelessWidget {
     );
   }
 }
-
-
-// home: Scaffold(
-//           body: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Text('Hello World!'),
-//               const SizedBox(height: 10),
-//               IconButton(
-//                 icon: Icon(Icons.dark_mode),
-//                 onPressed: () {
-//                   context.read<ThemeProvider>().toggleTheme();
-//                 },
-//               )
-//             ],
-//           ),
-//           bottomNavigationBar: Consumer<BottomNavBarProvider>(
-//             builder: (_, nav, __) => BottomNavBar(
-//               currentIndex: nav.index,
-//               onTap: nav.change,
-//             ),
-//           ),
-//         ),
