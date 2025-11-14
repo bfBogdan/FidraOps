@@ -91,7 +91,7 @@ class NotificationsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.only(left: 40.0),
+              padding: EdgeInsets.only(left: 20.0),
               child: Text(
                 'Notifications',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
@@ -145,7 +145,7 @@ class NotificationsPage extends StatelessWidget {
 
   Widget _sectionTitle(String title, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40, bottom: 10),
+      padding: const EdgeInsets.only(left: 20, bottom: 10),
       child: Text(
         title,
         style: Theme.of(context).textTheme.bodySmall,

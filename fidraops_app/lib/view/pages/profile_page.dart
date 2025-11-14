@@ -53,12 +53,9 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 15,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      'Organisation',
-                      style: Theme.of(context).textTheme.bodySmall
-                    ),
+                  Text(
+                    'Organisation',
+                    style: Theme.of(context).textTheme.bodySmall
                   ),
                   ProfileButton(
                     icon: LucideIcons.creditCard,
@@ -81,12 +78,9 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 15,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      'Personal',
-                      style: Theme.of(context).textTheme.bodySmall
-                    ),
+                  Text(
+                    'Personal',
+                    style: Theme.of(context).textTheme.bodySmall
                   ),
                   ProfileButton(
                     icon: context.read<ThemeProvider>().themeMode == ThemeMode.dark ? LucideIcons.sun : LucideIcons.moon,

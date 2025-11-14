@@ -80,15 +80,11 @@ class _BottomNavBarState extends State<BottomNavBar>
       ),
       RadialItem(
         icon: LucideIcons.clipboardList,
-        onTap: () {
-          // TODO
-        },
+        onTap: () {}, // Inventory
       ),
       RadialItem(
         icon: LucideIcons.box,
-        onTap: () {
-          // TODO
-        },
+        onTap: () => widget.onTap(2),
       ),
     ];
 
@@ -158,13 +154,13 @@ class _BottomNavBarState extends State<BottomNavBar>
 
                   _NavItem(
                     icon: LucideIcons.bell,
-                    active: widget.currentIndex == 2,
-                    onTap: () => widget.onTap(2),
+                    active: widget.currentIndex == 3,
+                    onTap: () => widget.onTap(3),
                   ),
                   _NavItem(
                     icon: LucideIcons.circleUserRound,
-                    active: widget.currentIndex == 3,
-                    onTap: () => widget.onTap(3),
+                    active: widget.currentIndex == 4,
+                    onTap: () => widget.onTap(4),
                   ),
                 ],
               ),

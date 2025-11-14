@@ -29,7 +29,7 @@ class ProjectsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.only(left: 40.0),
+              padding: EdgeInsets.only(left: 20.0),
               child: Text(
                 'Projects',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
