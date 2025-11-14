@@ -6,12 +6,13 @@ dotenv.config();
 
 // configure your PostgreSQL connection
 const pool = new Pool({
-  user: 'postgres',                           // DB username
-  host: 'switchyard.proxy.rlwy.net',         // DB host
-  database: 'railway',                        // DB name
-  password: 'scBrRUsRaykSnmGaaOgyAJyrtmaeJYHo', // DB password
-  port: 50684,                                // DB port
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
+
 
 // check connection
 pool.connect()
