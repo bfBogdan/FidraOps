@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 //import userAuthRoute from "./routes/userAuth";
-import organisationInfo from "./routes/organisation"
+import organisationAdminInfo from "./routes/organisation_admin"
+import organisationUserInfo from "./routes/organisation_user"
 
 dotenv.config();
 
@@ -16,7 +17,8 @@ app.use(express.json());
 //app.use("/auth", userAuthRoute);
 
 // for all operations inside an organisation
-app.use("/org", organisationInfo);
+app.use("/adminOrg", organisationAdminInfo);
+app.use("/userOrg", organisationUserInfo);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
