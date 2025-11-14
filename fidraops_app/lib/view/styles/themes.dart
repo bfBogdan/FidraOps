@@ -31,6 +31,8 @@ class AppThemes {
 
     textTheme: TextTheme(
       headlineLarge: AppStyles.headline1,
+      headlineMedium: AppStyles.headlineMedium,
+      headlineSmall: AppStyles.headlineSmall,
       bodyLarge: AppStyles.body1,
       labelLarge: AppStyles.button,
     ),

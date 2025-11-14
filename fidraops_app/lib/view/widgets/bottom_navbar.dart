@@ -3,6 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import  'package:lucide_icons_flutter/lucide_icons.dart';
 
+class RadialItem {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  RadialItem({required this.icon, required this.onTap});
+}
+
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -45,8 +52,10 @@ class BottomNavBar extends StatelessWidget {
               navItems: [
                 _NavItem(
                   icon: LucideIcons.folderKanban,
-                  active: currentIndex == 100,
-                  onTap: () {},
+                  active: currentIndex == 1,
+                  onTap: () {
+                    onTap(1);
+                  },
                 ),
                 _NavItem(
                   icon: LucideIcons.trafficCone,
@@ -67,13 +76,13 @@ class BottomNavBar extends StatelessWidget {
             ),
             _NavItem(
               icon: LucideIcons.bell,
-              active: currentIndex == 100,
-              onTap: () {},
+              active: currentIndex == 2,
+              onTap: () => onTap(2),
             ),
             _NavItem(
               icon: LucideIcons.circleUserRound,
-              active: currentIndex == 1,
-              onTap: () => onTap(1),
+              active: currentIndex == 3,
+              onTap: () => onTap(3),
             ),
           ],
         ),

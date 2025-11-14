@@ -1,6 +1,8 @@
 import 'package:fidraops_app/providers/bottom_navbar_provider.dart';
 import 'package:fidraops_app/view/pages/home_page.dart';
+import 'package:fidraops_app/view/pages/notifications_page.dart';
 import 'package:fidraops_app/view/pages/profile_page.dart';
+import 'package:fidraops_app/view/pages/projects_page.dart';
 import 'package:fidraops_app/view/widgets/bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,8 @@ class MainShell extends StatelessWidget {
 
   final List<Widget> pages = const [
     HomePage(),
+    ProjectsPage(),
+    NotificationsPage(),
     ProfilePage(),
   ];
 
