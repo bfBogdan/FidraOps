@@ -1,95 +1,265 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import  'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class RadialItem {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  RadialItem({required this.icon, required this.onTap});
-}
-
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  const BottomNavBar({super.key, required this.currentIndex, required this.onTap});
-  
+  const BottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar>
+    with SingleTickerProviderStateMixin {
+  bool _menuOpen = false;
+  late AnimationController _controller;
+  late Animation<double> _anim;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 220),
+    );
+    _anim = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack,
+      reverseCurve: Curves.easeInBack,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleMenu() {
+    if (_menuOpen) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
+
+    setState(() {
+      _menuOpen = !_menuOpen;
+    });
+  }
+
+  void _handleRadialTap(int index, VoidCallback action) {
+    // 1. Run the action (ex: onTap(1))
+    action();
+
+    // 2. Close menu
+    _controller.reverse();
+    setState(() {
+      _menuOpen = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.all(Radius.circular(23.0)),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x29000000),
-              offset: Offset(0, 2),
-              blurRadius: 8,
-              spreadRadius: 0,
+    // Height of the whole bottom area (bar + space for radial menu)
+    const double totalHeight = 140.0;
+    const double barPaddingBottom = 16.0;
+
+    // Define your radial items here (like before)
+    final radialItems = <RadialItem>[
+      RadialItem(
+        icon: LucideIcons.folderKanban,
+        onTap: () => widget.onTap(1), // Projects
+      ),
+      RadialItem(
+        icon: LucideIcons.trafficCone,
+        onTap: () {
+          // TODO
+        },
+      ),
+      RadialItem(
+        icon: LucideIcons.clipboardList,
+        onTap: () {
+          // TODO
+        },
+      ),
+      RadialItem(
+        icon: LucideIcons.box,
+        onTap: () {
+          // TODO
+        },
+      ),
+    ];
+
+    return SizedBox(
+      height: totalHeight,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.bottomCenter,
+        children: [
+          // PILL NAVBAR AT THE BOTTOM
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: barPaddingBottom,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(Radius.circular(23.0)),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x29000000),
+                    offset: Offset(0, 2),
+                    blurRadius: 8,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _NavItem(
+                    icon: LucideIcons.house,
+                    active: widget.currentIndex == 0,
+                    onTap: () => widget.onTap(0),
+                  ),
+                  _NavItem(
+                    icon: LucideIcons.calendarRange,
+                    active: widget.currentIndex == 100,
+                    onTap: () {},
+                  ),
+
+                  // CENTER + BUTTON
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: _toggleMenu,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOutQuad,
+                      width: _menuOpen ? 56 : 44,
+                      height: _menuOpen ? 56 : 44,
+                      alignment: Alignment.center,
+                      child: AnimatedRotation(
+                        turns: _menuOpen ? 0.25 : 0.0, // 90deg
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeOutQuad,
+                        child: Icon(
+                          LucideIcons.circlePlus,
+                          color: _menuOpen
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.grey.shade500,
+                          size: _menuOpen ? 36 : 28,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  _NavItem(
+                    icon: LucideIcons.bell,
+                    active: widget.currentIndex == 2,
+                    onTap: () => widget.onTap(2),
+                  ),
+                  _NavItem(
+                    icon: LucideIcons.circleUserRound,
+                    active: widget.currentIndex == 3,
+                    onTap: () => widget.onTap(3),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _NavItem(
-              icon: LucideIcons.house,
-              active: currentIndex == 0,
-              onTap: () => onTap(0),
+          ),
+
+          // RADIAL MENU ABOVE THE BAR (NO OVERLAY)
+          Positioned(
+            bottom: barPaddingBottom + 40, // ~40px above bar
+            left: 0,
+            right: 0,
+            child: IgnorePointer(
+              ignoring: !_menuOpen,
+              child: AnimatedBuilder(
+                animation: _anim,
+                builder: (context, child) {
+                  if (_anim.value == 0) return const SizedBox.shrink();
+
+                  const double radius = 80.0;
+                  final count = radialItems.length;
+
+                  const double startAngle = 1/6 * pi;
+                  const double endAngle = pi;
+
+                  return SizedBox(
+                    height: radius + 50,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.bottomCenter,
+                      children: List.generate(count, (i) {
+                        final t = count == 1 ? 0.5 : i * 0.8 / (count - 1);
+                        final angle =
+                            startAngle + (endAngle - startAngle) * t;
+                        final distance = radius * _anim.value;
+                        final x = [0, 3].contains(i) ? 1.3 : 1.2;
+
+                        final offset = Offset(
+                          cos(angle) * distance * -1 * x,
+                          sin(angle) * distance * -1,
+                        );
+
+                        return Transform.translate(
+                          offset: offset,
+                          child: Opacity(
+                            opacity: (_anim.value.isNaN ? 0.0 : _anim.value.clamp(0.0, 1.0)),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                _handleRadialTap(i, radialItems[i].onTap);
+                              },
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  shape: BoxShape.circle,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0x29000000),
+                                      offset: Offset(0, 2),
+                                      blurRadius: 8,
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  radialItems[i].icon,
+                                  size: 24,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  );
+                },
+              ),
             ),
-            _NavItem(
-              icon: LucideIcons.calendarRange,
-              active: currentIndex == 100,
-              onTap: () {},
-            ),
-            _ExtendableNavItem(
-              icon: LucideIcons.circlePlus,
-              navItems: [
-                _NavItem(
-                  icon: LucideIcons.folderKanban,
-                  active: currentIndex == 1,
-                  onTap: () {
-                    onTap(1);
-                  },
-                ),
-                _NavItem(
-                  icon: LucideIcons.trafficCone,
-                  active: currentIndex == 100,
-                  onTap: () {},
-                ),
-                _NavItem(
-                  icon: LucideIcons.clipboardList,
-                  active: currentIndex == 100,
-                  onTap: () {},
-                ),
-                _NavItem(
-                  icon: LucideIcons.box,
-                  active: currentIndex == 100,
-                  onTap: () {},
-                ),
-              ],
-            ),
-            _NavItem(
-              icon: LucideIcons.bell,
-              active: currentIndex == 2,
-              onTap: () => onTap(2),
-            ),
-            _NavItem(
-              icon: LucideIcons.circleUserRound,
-              active: currentIndex == 3,
-              onTap: () => onTap(3),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
+// REUSE YOUR NavItem + RadialItem
 
 class _NavItem extends StatelessWidget {
   final IconData icon;
@@ -115,163 +285,12 @@ class _NavItem extends StatelessWidget {
   }
 }
 
-class _ExtendableNavItem extends StatefulWidget {
+class RadialItem {
   final IconData icon;
-  final List<_NavItem> navItems;
+  final VoidCallback onTap;
 
-  const _ExtendableNavItem({
+  RadialItem({
     required this.icon,
-    required this.navItems,
+    required this.onTap,
   });
-
-  @override
-  State<_ExtendableNavItem> createState() => _ExtendableNavItemState();
-}
-
-class _ExtendableNavItemState extends State<_ExtendableNavItem> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  OverlayEntry? _overlay;
-  bool active = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 100),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _overlay?.remove();
-    super.dispose();
-  }
-
-  void _toggleMenu() {
-    if (_overlay == null) {
-      _openMenu();
-    } else {
-      _closeMenu();
-    }
-  }
-
-  void _openMenu() {
-    _overlay = _createOverlay();
-    Overlay.of(context).insert(_overlay!);
-    setState(() => active = true);
-    _controller.forward();
-  }
-
-  void _closeMenu() {
-    _controller.reverse().then((_) {
-      _overlay?.remove();
-      _overlay = null;
-
-      setState(() => active = false);
-    });
-  }
-
-    OverlayEntry _createOverlay() {
-    final RenderBox box = context.findRenderObject() as RenderBox;
-    final Offset position = box.localToGlobal(Offset.zero);
-
-    return OverlayEntry(
-      builder: (context) {
-        return Stack(
-          children: [
-            // Tap outside to close
-            GestureDetector(
-              onTap: _closeMenu,
-              behavior: HitTestBehavior.opaque,
-            ),
-
-            // Radial menu
-            Positioned(
-              left: position.dx,
-              top: position.dy - 80, // position menu above bar
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: _buildRadialItems(),
-                  );
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  List<Widget> _buildRadialItems() {
-    final int count = widget.navItems.length;
-    final double radius = 70;
-
-    const double startAngle = pi;
-    const double endAngle = 0;
-    final double arc = -1 * (startAngle - endAngle);   // pi (180 degrees)
-
-    return List.generate(count, (i) {
-      final double angle =
-          startAngle - (arc * (i / (count - 1))); // distribute evenly on arc
-
-      return Transform.translate(
-        offset: Offset(
-          [0, 3].contains(i) ? 1.2 * radius * _controller.value * cos(angle) : 0.9 * radius * _controller.value * cos(angle),
-          [0, 3].contains(i) ? 1.2 * radius * _controller.value * sin(angle) : 0.7 * radius * _controller.value * sin(angle),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x29000000),
-                offset: Offset(0, 2),
-                blurRadius: 8,
-                spreadRadius: 0,
-              ),
-            ],
-          ),
-          child: widget.navItems[i]
-        ),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final double size = active ? 40 : 28;
-
-    return GestureDetector(
-      onTap: _toggleMenu,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOutQuad,
-        width: size + 16,
-        height: size + 16,
-        alignment: Alignment.center,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          switchInCurve: Curves.easeOutBack,
-          switchOutCurve: Curves.easeInBack,
-          transitionBuilder: (child, animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          child: Icon(
-            widget.icon,
-            key: ValueKey(active), // IMPORTANT
-            color: active 
-                ? Theme.of(context).colorScheme.primary 
-                : Colors.grey.shade500,
-            size: size,
-          ),
-        ),
-      ),
-    );
-  }
 }
