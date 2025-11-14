@@ -1,7 +1,23 @@
+import 'package:fidraops_app/providers/bottom_navbar_provider.dart';
+import 'package:fidraops_app/providers/theme_provider.dart';
+import 'package:fidraops_app/view/pages/login_page.dart';
+import 'package:fidraops_app/view/pages/main_shell.dart';
+import 'package:fidraops_app/view/styles/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => BottomNavBarProvider()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +25,43 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return Builder(
+      builder: (context) => MaterialApp(
+        title: 'FidraOps',
+        theme: AppThemes.lightTheme,
+        darkTheme: AppThemes.darkTheme,
+        themeMode: context.watch<ThemeProvider>().themeMode,
+        debugShowCheckedModeBanner: false,
+
+        initialRoute: '/main',
+        routes: {
+          '/main': (_) => MainShell(),
+          '/login': (_) => const LoginPage(),
+        }
       ),
     );
   }
 }
+
+
+// home: Scaffold(
+//           body: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Text('Hello World!'),
+//               const SizedBox(height: 10),
+//               IconButton(
+//                 icon: Icon(Icons.dark_mode),
+//                 onPressed: () {
+//                   context.read<ThemeProvider>().toggleTheme();
+//                 },
+//               )
+//             ],
+//           ),
+//           bottomNavigationBar: Consumer<BottomNavBarProvider>(
+//             builder: (_, nav, __) => BottomNavBar(
+//               currentIndex: nav.index,
+//               onTap: nav.change,
+//             ),
+//           ),
+//         ),
