@@ -99,7 +99,7 @@ class NotificationsPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 20, bottom: 100),
                 children: buildSections(
                   context,
                   todayNotifications,

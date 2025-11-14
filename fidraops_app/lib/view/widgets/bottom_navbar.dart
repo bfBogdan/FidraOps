@@ -79,12 +79,6 @@ class _BottomNavBarState extends State<BottomNavBar>
         onTap: () => widget.onTap(1), // Projects
       ),
       RadialItem(
-        icon: LucideIcons.trafficCone,
-        onTap: () {
-          // TODO
-        },
-      ),
-      RadialItem(
         icon: LucideIcons.clipboardList,
         onTap: () {
           // TODO
@@ -192,7 +186,7 @@ class _BottomNavBarState extends State<BottomNavBar>
                   const double radius = 80.0;
                   final count = radialItems.length;
 
-                  const double startAngle = 1/6 * pi;
+                  const double startAngle = 2/7 * pi;
                   const double endAngle = pi;
 
                   return SizedBox(
@@ -201,15 +195,16 @@ class _BottomNavBarState extends State<BottomNavBar>
                       clipBehavior: Clip.none,
                       alignment: Alignment.bottomCenter,
                       children: List.generate(count, (i) {
-                        final t = count == 1 ? 0.5 : i * 0.8 / (count - 1);
+                        final t = count == 1 ? 0.5 : i * 0.6 / (count - 1);
                         final angle =
                             startAngle + (endAngle - startAngle) * t;
                         final distance = radius * _anim.value;
-                        final x = [0, 3].contains(i) ? 1.3 : 1.2;
+                        final x = i == 0 ? 1.3 : 1.2;
+                        final y = [0, 2].contains(i) ? 0.7 : 0.9;
 
                         final offset = Offset(
                           cos(angle) * distance * -1 * x,
-                          sin(angle) * distance * -1,
+                          sin(angle) * distance * -1 * y,
                         );
 
                         return Transform.translate(
