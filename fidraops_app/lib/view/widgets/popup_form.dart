@@ -45,6 +45,7 @@ class PopupForm extends StatelessWidget {
         width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9 : MediaQuery.of(context).size.width * 0.6,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: fields,
           ),
         ),

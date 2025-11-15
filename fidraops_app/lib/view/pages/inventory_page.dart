@@ -121,6 +121,12 @@ class InventoryPage extends StatelessWidget {
   void showCreateInventoryItemForm(BuildContext context) {
     final nameController = TextEditingController();
     final quantityController = TextEditingController();
+    final items = <DropdownMenuItem<String>>[
+      DropdownMenuItem(value: 'Category 1', child: Text('Category 1')),
+      DropdownMenuItem(value: 'Category 2', child: Text('Category 2')),
+      DropdownMenuItem(value: 'Category 3', child: Text('Category 3')),
+    ];
+    String? selectedCategory;
 
     showDialog(
       context: context,
@@ -130,6 +136,8 @@ class InventoryPage extends StatelessWidget {
           TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
           SizedBox(height: 12),
           TextField(decoration: InputDecoration(labelText: "Quantity"), controller: quantityController, keyboardType: TextInputType.number),
+          SizedBox(height: 12),
+          DropdownButton(items: items, onChanged: (value) { selectedCategory = value; }, value: selectedCategory, hint: Text("Select Category")),
         ],
         onSubmit: () {
           print("Item: ${nameController.text}");

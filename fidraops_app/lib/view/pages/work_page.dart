@@ -1,3 +1,4 @@
+import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/view/widgets/work_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -57,7 +58,7 @@ class WorkPage extends StatelessWidget {
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => showCreateWorkForm(context),
                     child: Container(
                       width: 40,
                       height: 40,
@@ -110,6 +111,25 @@ class WorkPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void showCreateWorkForm(BuildContext context) {
+    final nameController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Schedule work",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
+          SizedBox(height: 12),
+        ],
+        onSubmit: () {
+          print("Item: ${nameController.text}");
+        },
+        formType: PopupFormType.edit,
       ),
     );
   }
