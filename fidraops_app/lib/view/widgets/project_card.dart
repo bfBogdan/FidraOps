@@ -59,15 +59,19 @@ class ProjectCard extends StatelessWidget {
                 children: [
                   Text(
                     project.title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                     softWrap: true,
                   ),
                   Text(
                     project.description ?? 'No description provided.',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
+                    maxLines: 2,
                     softWrap: true,
                   ),
                 ],

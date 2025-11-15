@@ -1,3 +1,4 @@
+import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/providers/work.dart';
@@ -29,6 +30,25 @@ class WorkPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Scheduled work',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                  ),
+                  GestureDetector(
+                    onTap: () => showCreateWorkForm(context),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreen,
+                        shape: BoxShape.circle,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x29000000),
+                            offset: Offset(0, 2),
+                            blurRadius: 8,
+                            spreadRadius: 0,
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
@@ -110,6 +130,25 @@ class WorkPage extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void showCreateWorkForm(BuildContext context) {
+    final nameController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Schedule work",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
+          SizedBox(height: 12),
+        ],
+        onSubmit: () {
+          print("Item: ${nameController.text}");
+        },
+        formType: PopupFormType.edit,
       ),
     );
   }

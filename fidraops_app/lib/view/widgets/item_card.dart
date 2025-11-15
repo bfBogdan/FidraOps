@@ -1,19 +1,16 @@
+import 'package:fidraops_app/data/models/inventory_item.dart';
+import 'package:fidraops_app/view/widgets/popup_form.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
-  final int id;
-  final String title;
-  final int quantity;
-  final String? category;
+  final InventoryItem item;
   final Color color;
   final IconData? icon;
 
   const ItemCard({
     super.key,
-    required this.id,
-    required this.title,
-    required this.quantity,
-    required this.category,
+    required this.item,
     required this.color,
     this.icon,
   });
@@ -41,7 +38,7 @@ class ItemCard extends StatelessWidget {
             right: 0,
             child: IconButton(
               onPressed: () {
-                _showItemMenu(context);
+                _showItemMenu(context, item);
               },
               icon: Icon(
                 Icons.more_vert_rounded,
@@ -69,32 +66,35 @@ class ItemCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      softWrap: true,
                     ),
-                  ),
-                  Text(
-                    'Category: $category',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                    Text(
+                      'Category: ${item.category == '' ? 'Uncategorized' : item.category}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Quantity: $quantity',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                    Text(
+                      'Quantity: ${item.quantity}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -103,7 +103,7 @@ class ItemCard extends StatelessWidget {
     );
   }
 
-  void _showItemMenu(BuildContext context) {
+  void _showItemMenu(BuildContext context, InventoryItem item) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -136,8 +136,7 @@ class ItemCard extends StatelessWidget {
                 title: const Text("Edit item"),
                 onTap: () {
                   Navigator.pop(context);
-                  print("EDIT ITEM");
-                  // TODO: open your edit screen
+                  showEditInventoryItemForm(context, item);
                 },
               ),
 
@@ -150,8 +149,7 @@ class ItemCard extends StatelessWidget {
                 title: const Text("Change quantity"),
                 onTap: () {
                   Navigator.pop(context);
-                  print("CHANGE QUANTITY");
-                  // TODO: open change quantity dialog
+                  showChangeQuantityInventoryItemForm(context, item);
                 },
               ),
 
@@ -167,8 +165,7 @@ class ItemCard extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  print("DELETE ITEM");
-                  // TODO: delete logic
+                  showDeleteInventoryItemForm(context, item);
                 },
               ),
 
@@ -177,6 +174,81 @@ class ItemCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void showEditInventoryItemForm(BuildContext context, InventoryItem item) {
+    final nameController = TextEditingController(text: item.title);
+    final quantityController = TextEditingController(text: item.quantity.toString());
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Edit Inventory Item",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
+          SizedBox(height: 12),
+          TextField(decoration: InputDecoration(labelText: "Quantity"), controller: quantityController, keyboardType: TextInputType.number),
+        ],
+        onSubmit: () {
+          print("Item: ${nameController.text}");
+          print("Quantity: ${quantityController.text}");
+        },
+        formType: PopupFormType.edit,
+      ),
+    );
+  }
+
+  void showChangeQuantityInventoryItemForm(BuildContext context, InventoryItem item) {
+    final quantityController = TextEditingController(text: item.quantity.toString());
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Change Quantity",
+        fields: [
+          SizedBox(
+            height: 150,
+            child: CupertinoPicker(
+              scrollController: FixedExtentScrollController(initialItem: item.quantity),
+              itemExtent: 40,
+              onSelectedItemChanged: (int index) {
+                quantityController.text = index.toString();
+              },
+              children: List<Widget>.generate(101, (int index) {
+                return Center(
+                  child: Text(
+                    index.toString(),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ],
+        onSubmit: () {
+          print("Quantity: ${quantityController.text}");
+        },
+        formType: PopupFormType.edit,
+      ),
+    );
+  }
+
+  void showDeleteInventoryItemForm(BuildContext context, InventoryItem item) {
+    final nameController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Delete Inventory Item",
+        fields: [],
+        onSubmit: () {
+          print("Item: ${nameController.text}");
+          print("Description: ${descriptionController.text}");
+        },
+        formType: PopupFormType.delete,
+      ),
     );
   }
 }
