@@ -20,6 +20,7 @@ class SOP {
   });
 
   factory SOP.fromJson(Map<String, dynamic> json) {
+    print('Parsing SOP from JSON: $json');
     return SOP(
       id: json['id'] as int,
       projectId: json['project_id'] as int,

@@ -1,6 +1,8 @@
 import 'package:fidraops_app/data/models/project.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
+import 'package:fidraops_app/data/repositories/project.dart';
 import 'package:fidraops_app/providers/app_state.dart';
+import 'package:fidraops_app/providers/project.dart';
 import 'package:fidraops_app/providers/sop.dart';
 import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/view/widgets/sop_card.dart';
@@ -250,9 +252,17 @@ class ProjectPage extends StatelessWidget {
       builder: (_) => PopupForm(
         title: "Create SOP",
         fields: [
-          TextField(decoration: InputDecoration(labelText: "SOP Name"), controller: nameController),
+          TextField(
+            decoration: InputDecoration(labelText: "SOP Name"),
+            controller: nameController,
+          ),
           SizedBox(height: 12),
-          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+          TextField(
+            decoration: InputDecoration(labelText: "Description"),
+            controller: descriptionController,
+            minLines: 3,
+            maxLines: 5,
+          ),
         ],
         onSubmit: () {
           print("SOP: ${nameController.text}");
@@ -310,7 +320,6 @@ class ProjectPage extends StatelessWidget {
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
                   showDeleteProjectForm(context, project);
                 },
               ),
@@ -325,16 +334,26 @@ class ProjectPage extends StatelessWidget {
 
   void showEditProjectForm(BuildContext context, Project project) {
     final nameController = TextEditingController(text: project.title);
-    final descriptionController = TextEditingController(text: project.description);
+    final descriptionController = TextEditingController(
+      text: project.description,
+    );
 
     showDialog(
       context: context,
       builder: (_) => PopupForm(
         title: "Edit Project",
         fields: [
-          TextField(decoration: InputDecoration(labelText: "Project Name"), controller: nameController),
+          TextField(
+            decoration: InputDecoration(labelText: "Project Name"),
+            controller: nameController,
+          ),
           SizedBox(height: 12),
-          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+          TextField(
+            decoration: InputDecoration(labelText: "Description"),
+            controller: descriptionController,
+            minLines: 3,
+            maxLines: 5,
+          ),
         ],
         onSubmit: () {
           print("Project: ${nameController.text}");
@@ -349,14 +368,25 @@ class ProjectPage extends StatelessWidget {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
 
+    final projectRepository = ProjectRepository();
+
     showDialog(
       context: context,
       builder: (_) => PopupForm(
         title: "Delete Project",
         fields: [],
-        onSubmit: () {
+        onSubmit: () async {
           print("Project: ${nameController.text}");
           print("Description: ${descriptionController.text}");
+
+          await projectRepository.deleteProject(
+            context.read<HttpService>(),
+            context.read<AppState>(),
+            project.id,
+          );
+
+          Navigator.pop(context);
+          Navigator.pop(context);
         },
         formType: PopupFormType.delete,
       ),

@@ -73,4 +73,48 @@ class ProjectRepository {
       throw Exception('Failed to create project.');
     }
   }
+
+  //Delete
+  Future<bool> deleteProject(
+    HttpService httpService,
+    AppState appState,
+    int projectId,
+  ) async {
+    final userId = appState.currentUser?.id;
+    if (userId == null) {
+      throw Exception('User is not authenticated.');
+    }
+
+    try {
+      final response = await httpService.dbDelete(
+        '/$userId/$projectId/deleteProject',
+      );
+
+      final raw = response.data;
+
+      if (raw == null) {
+        return true;
+      }
+
+      if (raw is Map<String, dynamic>) {
+        if (raw.containsKey('deleted') && raw['deleted'] == true) {
+          return true;
+        }
+
+        if (raw.containsKey('status') && raw['status'] == "ok") {
+          return true;
+        }
+
+        if (raw.containsKey('message')) {
+          return true;
+        }
+      }
+
+      print("Unexpected project delete response: $raw");
+      return false;
+    } catch (e) {
+      print('Error in deleteProject: $e');
+      throw Exception('Failed to delete project.');
+    }
+  }
 }

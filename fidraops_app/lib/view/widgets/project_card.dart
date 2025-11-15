@@ -59,10 +59,7 @@ class ProjectCard extends StatelessWidget {
                 children: [
                   Text(
                     project.title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     softWrap: true,
                   ),
                   Text(
