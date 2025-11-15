@@ -193,6 +193,92 @@ export const getAllActiveSOPTasks = async (req: Request, res: Response) => {
     }
 };
 
+export const activateSOP = async (req: Request, res: Response) => {
+    const orgId = parseInt(req.params.orgId);
+    const adminId = parseInt(req.params.adminId);
+    const sopId = parseInt(req.params.sopId);
+
+    // get from body
+    const { users_id, start_timestamp } = req.body;
+
+    if (!(await checkIfAdmin(adminId))) {
+        return res.status(403).json({ error: "Not admin!" });
+    }
+
+    const users_id_string = Array.isArray(users_id)
+        ? users_id.join(",")
+        : users_id;
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO active_sop (
+                project_id,
+                title,
+                description,
+                required_assignee_number,
+                users_id,
+                time_estimation_minutes,
+                required_equipments,
+                organisation_id,
+                start_timestamp,
+                status
+            )
+            SELECT 
+                project_id,
+                title,
+                description,
+                required_assignee_number,
+                $1,
+                time_estimation_minutes,
+                required_equipments,
+                organisation_id,
+                $2,
+                $3
+            FROM sop
+            WHERE id = $4 AND organisation_id = $5
+            RETURNING *`,
+            [users_id_string, start_timestamp, 0, sopId, orgId]
+        );
+
+        try {
+            const result = await pool.query(
+                `INSERT INTO active_sop_task (
+                    sop_id,
+                    description,
+                    documentation,
+                    position,
+                    status,
+                    organisation_id
+                )
+                SELECT 
+                    sop_id,
+                    description,
+                    documentation,
+                    position,
+                    $1,
+                    organisation_id
+                FROM sop_task
+                WHERE sop_id = $2 AND organisation_id = $3
+                RETURNING *`,
+                [0, sopId, orgId]
+            );
+        } catch (error: any) {
+            console.error("Error activating SOP (tasks):", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+
+        res.status(201).json({
+            message: "SOP activated successfully",
+            active_sop: result.rows[0]
+        });
+
+    } catch (error: any) {
+        console.error("Error activating SOP:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
 export const getAllProjects = async (req: Request, res: Response) => {
     const orgId = req.params.orgId;
     if (await checkIfAdmin(parseInt(req.params.adminId))){

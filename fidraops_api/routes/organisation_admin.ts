@@ -20,6 +20,8 @@ router.get("/:orgId/:adminId/:sopId/getSOPTasks", adminController.getAllSOPTasks
 router.get("/:orgId/:adminId/getActiveSOPs", adminController.getAllActiveSOPs);
 router.get("/:orgId/:adminId/:sopId/getActiveSOPTasks", adminController.getAllActiveSOPTasks);
 
+router.post("/:orgId/:adminId/:sopId/activateSOP", adminController.activateSOP);
+
 // - projects endpoints -
 router.get("/:orgId/:adminId/getProjects", adminController.getAllProjects);
 router.post("/:orgId/:adminId/createProject", adminController.createProject);
