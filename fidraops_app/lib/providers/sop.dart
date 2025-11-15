@@ -32,4 +32,21 @@ class SOPProvider with ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  Future<void> fetchAllSOPs(
+    HttpService httpService,
+    AppState appState
+  ) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _sops = await _sopRepository.fetchAllSOPs(httpService, appState);
+    } catch (e) {
+      _error = e.toString();
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
 }

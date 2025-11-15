@@ -15,4 +15,16 @@ class SOPRepository {
         .map((sopJson) => SOP.fromJson(sopJson as Map<String, dynamic>))
         .toList();
   }
+
+  Future<List<SOP>> fetchAllSOPs(
+    HttpService httpService,
+    AppState appState
+  ) async {
+    final response = await httpService.dbGet(
+      '/${appState.currentUser?.id}/getSOPs',
+    );
+    return (response.data as List)
+        .map((sopJson) => SOP.fromJson(sopJson as Map<String, dynamic>))
+        .toList();
+  }
 }

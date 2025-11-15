@@ -1,3 +1,4 @@
+import 'package:fidraops_app/view/pages/create_work_page.dart';
 import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
@@ -40,7 +41,9 @@ class WorksPage extends StatelessWidget {
                           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                         ),
                         GestureDetector(
-                          onTap: () => showCreateWorkForm(context),
+                          onTap:() {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_) => CreateWorkPage()));
+                          },
                           child: Container(
                             width: 40,
                             height: 40,
