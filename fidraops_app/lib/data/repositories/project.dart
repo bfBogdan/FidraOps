@@ -7,10 +7,9 @@ class ProjectRepository {
     HttpService httpService,
     AppState appState,
   ) async {
-    final response = await httpService.dio.get(
-      '${appState.currentUser?.id}/getProjects',
+    final response = await httpService.dbGet(
+      '/${appState.currentUser?.id}/getProjects',
     );
-    print(response.data);
     return (response.data as List)
         .map(
           (projectJson) =>

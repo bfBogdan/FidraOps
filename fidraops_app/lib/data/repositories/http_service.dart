@@ -6,7 +6,7 @@ class HttpService {
   final AppState appState;
 
   HttpService(this.appState) {
-    dio.options.baseUrl = 'http://10.22.145.130:3000';
+    dio.options.baseUrl = 'https://fidraops-production.up.railway.app';
   }
 
   String _prefixedPath(String path) {
