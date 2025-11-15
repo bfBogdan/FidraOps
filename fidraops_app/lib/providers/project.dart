@@ -11,9 +11,17 @@ class ProjectProvider with ChangeNotifier {
   List<Project> _projects = [];
   String? _error;
 
+  bool _isDisposed = false;
+
   bool get isLoading => _isLoading;
   List<Project> get projects => _projects;
   String? get error => _error;
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
 
   Future<void> fetchProjects(HttpService httpService, AppState appState) async {
     _isLoading = true;
@@ -26,6 +34,9 @@ class ProjectProvider with ChangeNotifier {
       _error = e.toString();
     }
     _isLoading = false;
-    notifyListeners();
+
+    if (!_isDisposed) {
+      notifyListeners();
+    }
   }
 }

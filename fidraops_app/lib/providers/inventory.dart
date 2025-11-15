@@ -11,9 +11,17 @@ class InventoryProvider with ChangeNotifier {
   List<InventoryItem> _items = [];
   String? _error;
 
+  bool _isDisposed = false;
+
   bool get isLoading => _isLoading;
   List<InventoryItem> get items => _items;
   String? get error => _error;
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
 
   Future<void> fetchInventory(
     HttpService httpService,
@@ -29,6 +37,8 @@ class InventoryProvider with ChangeNotifier {
       _error = e.toString();
     }
     _isLoading = false;
-    notifyListeners();
+    if (!_isDisposed) {
+      notifyListeners();
+    }
   }
 }
