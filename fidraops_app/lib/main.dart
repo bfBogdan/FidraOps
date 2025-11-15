@@ -1,3 +1,4 @@
+import 'package:fidraops_app/data/models/user.dart';
 import 'package:fidraops_app/providers/bottom_navbar_provider.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
@@ -11,13 +12,28 @@ import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
+  AppState appState = AppState();
+  appState.setAuthenticated(
+    User(
+      id: 1,
+      name: 'admin',
+      password: 'adminpass',
+      email: 'admin@example.com',
+      createdAt: DateTime.now(),
+      organizationId: 1,
+      isAdmin: true,
+    ),
+    1,
+  );
+  HttpService httpService = HttpService(appState);
+
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (_) => HttpService()),
-        ChangeNotifierProvider(create: (_) => AppState()),
+        ChangeNotifierProvider(create: (_) => appState),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavBarProvider()),
+        Provider(create: (_) => httpService),
       ],
       child: const MainApp(),
     ),
@@ -41,7 +57,7 @@ class MainApp extends StatelessWidget {
         routes: {
           '/main': (_) => MainShell(),
           '/login': (_) => const LoginPage(),
-        }
+        },
       ),
     );
   }

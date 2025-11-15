@@ -1,25 +1,20 @@
+import 'package:fidraops_app/data/repositories/http_service.dart';
+import 'package:fidraops_app/data/repositories/project.dart';
+import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/view/widgets/project_card.dart';
 import 'package:flutter/material.dart';
-import 'package:../../data/repositories/project_repository.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 class ProjectsPage extends StatelessWidget {
   const ProjectsPage({super.key});
 
   ProjectRepository get projectRepository => ProjectRepository();
   List<Map<String, dynamic>> get projects => [
-        {
-          'title': 'Alpha',
-          'description': 'Description for Project Alpha',
-        },
-        {
-          'title': 'Beta',
-          'description': 'Description for Project Beta',
-        },
-        {
-          'title': 'Gamma',
-          'description': 'Description for Project Gamma',
-        },
-      ];
+    {'title': 'Alpha', 'description': 'Description for Project Alpha'},
+    {'title': 'Beta', 'description': 'Description for Project Beta'},
+    {'title': 'Gamma', 'description': 'Description for Project Gamma'},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +34,10 @@ class ProjectsPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                projectRepository.fetchProjects(context.read<HttpService>(), context.read<AppState>());
+                projectRepository.fetchProjects(
+                  context.read<HttpService>(),
+                  context.read<AppState>(),
+                );
               },
               child: Container(
                 width: 40,
@@ -70,8 +68,10 @@ class ProjectsPage extends StatelessWidget {
                 itemCount: projects.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 20,
+                    ),
                     child: ProjectCard(
                       title: projects[index]['title'],
                       description: projects[index]['description'],
@@ -79,7 +79,7 @@ class ProjectsPage extends StatelessWidget {
                     ),
                   );
                 },
-              )
+              ),
             ),
           ],
         ),

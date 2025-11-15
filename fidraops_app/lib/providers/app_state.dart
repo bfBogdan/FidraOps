@@ -1,15 +1,15 @@
-import 'package:provider/provider.dart';
-import 'package:../data/models/user.dart';
+import 'package:fidraops_app/data/models/user.dart';
+import 'package:flutter/material.dart';
 
 class AppState extends ChangeNotifier {
   User? _currentUser;
   int? _organizationId;
 
   bool get isLoggedIn => _currentUser != null;
-  bool get isAdmin => _currentUser?.isAdmin;
+  bool? get isAdmin => _currentUser?.isAdmin;
   User? get currentUser => _currentUser;
   int? get organizationId => _organizationId;
-  
+
   void setAuthenticated(User user, int organizationId) {
     _currentUser = user;
     _organizationId = organizationId;
