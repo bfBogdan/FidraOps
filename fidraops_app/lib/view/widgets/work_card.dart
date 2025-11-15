@@ -1,7 +1,9 @@
 import 'package:fidraops_app/data/models/work.dart';
+import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/view/pages/work_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 class WorkCard extends StatelessWidget {
   final Work work;
@@ -89,8 +91,8 @@ class WorkCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 6),
-                  Row(
+                  if (context.read<AppState>().isAdmin == true) SizedBox(height: 6),
+                  if (context.read<AppState>().isAdmin == true) Row(
                     spacing: 8,
                     children: [
                       Icon(

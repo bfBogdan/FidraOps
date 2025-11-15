@@ -40,7 +40,7 @@ class WorksPage extends StatelessWidget {
                           'Scheduled work',
                           style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                         ),
-                        GestureDetector(
+                        if (context.read<AppState>().isAdmin == true) GestureDetector(
                           onTap:() {
                             Navigator.of(context).push(MaterialPageRoute(builder: (_) => CreateWorkPage()));
                           },
