@@ -4,15 +4,15 @@ import * as usersController from '../controllers/user_controller';
 const router = Router({ mergeParams: true });
 
 // - users endpoints -
-router.get("/:userId/:orgId/getUser", usersController.getUser);
+router.get("/:orgId/:userId/getUser", usersController.getUser);
 
 // - sop endpoints -
-router.get("/:userId/:orgId/getAllActiveAssignedSOPs", usersController.getAllActiveAssignedSOPs);
-router.get("/:userId/:orgId/:sopId/getActiveAssignedSOPTasks", usersController.getActiveAssignedSOPTasks);
+router.get("/:orgId/:userId/getAllActiveAssignedSOPs", usersController.getAllActiveAssignedSOPs);
+router.get("/:orgId/:userId/:sopId/getActiveAssignedSOPTasks", usersController.getActiveAssignedSOPTasks);
 
-router.post("/:userId/:orgId/:sopId/:startTimestamp/:usersIdArray/activateSOP", usersController.activateSOP);
+router.post("/:orgId/:userId/:sopId/:startTimestamp/:usersIdArray/activateSOP", usersController.activateSOP);
 
 // - inventory endpoints -
-router.get("/:userId/:orgId/:itemsIdArray/getInventoryOfAssignedActiveSOP", usersController.getInventoryOfAssignedActiveSOP);
+router.get("/:orgId/:userId/:itemsIdArray/getInventoryOfAssignedActiveSOP", usersController.getInventoryOfAssignedActiveSOP);
 
 export default router;
