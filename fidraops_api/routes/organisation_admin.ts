@@ -13,7 +13,7 @@ router.post("/:orgId/:adminId/createUser", adminController.createUser);
 
 // - sop library endpoints -
 router.get("/:orgId/:adminId/getSOPs", adminController.getAllSOPs);
-router.get("/:orgId/:adminId/getProjectSOPs", adminController.getProjectSOPs);
+router.get("/:orgId/:adminId/:projectId/getProjectSOPs", adminController.getProjectSOPs);
 router.get("/:orgId/:adminId/:sopId/getSOPTasks", adminController.getAllSOPTasks);
 
 // - active api endpoints -
