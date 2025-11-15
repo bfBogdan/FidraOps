@@ -64,11 +64,7 @@ class ProjectsPage extends StatelessWidget {
                                     horizontal: 20,
                                   ),
                                   child: ProjectCard(
-                                    title: item.title,
-                                    description: item.description ?? '',
-                                    color:
-                                        Colors.primaries[index %
-                                            Colors.primaries.length],
+                                    project: item,
                                   ),
                                 );
                               },

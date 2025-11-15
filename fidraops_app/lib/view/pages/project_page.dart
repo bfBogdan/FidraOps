@@ -1,9 +1,10 @@
+import 'package:fidraops_app/data/models/project.dart';
 import 'package:fidraops_app/view/widgets/sop_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ProjectPage extends StatelessWidget {
-  final Map<String, dynamic> project;
+  final Project project;
   
   const ProjectPage({super.key, required this.project});
 
@@ -149,7 +150,7 @@ class ProjectPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        project['title'],
+                        project.title,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -157,7 +158,7 @@ class ProjectPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        project['description'] ?? 'No description provided.',
+                        project.description ?? 'No description provided.',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[700],
