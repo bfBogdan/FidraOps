@@ -27,6 +27,11 @@ class InventoryProvider with ChangeNotifier {
     HttpService httpService,
     AppState appState,
   ) async {
+    if (appState.isAdmin != true) {
+      notifyListeners();
+      return;
+    }
+
     _isLoading = true;
     _error = null;
     notifyListeners();

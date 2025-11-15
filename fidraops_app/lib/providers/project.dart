@@ -24,6 +24,11 @@ class ProjectProvider with ChangeNotifier {
   }
 
   Future<void> fetchProjects(HttpService httpService, AppState appState) async {
+    if (appState.isAdmin != true) {
+      notifyListeners();
+      return;
+    }
+
     _isLoading = true;
     _error = null;
     notifyListeners();

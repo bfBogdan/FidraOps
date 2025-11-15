@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:fidraops_app/providers/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
@@ -125,7 +127,7 @@ class _BottomNavBarState extends State<BottomNavBar>
                   ),
 
                   // CENTER + BUTTON
-                  GestureDetector(
+                  if (context.read<AppState>().isAdmin == true) GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: _toggleMenu,
                     child: AnimatedContainer(
@@ -147,6 +149,12 @@ class _BottomNavBarState extends State<BottomNavBar>
                         ),
                       ),
                     ),
+                  ),
+
+                  if (context.read<AppState>().isAdmin == false) _NavItem(
+                    icon: LucideIcons.clipboardList,
+                    active: widget.currentIndex == 2,
+                    onTap: () => widget.onTap(2),
                   ),
 
                   _NavItem(

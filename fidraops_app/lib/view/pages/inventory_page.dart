@@ -1,4 +1,3 @@
-import 'package:fidraops_app/data/models/inventory_item.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/providers/inventory.dart';

@@ -8,7 +8,7 @@ class WorkRepository {
     AppState appState,
   ) async {
     final response = await httpService.dbGet(
-      '/${appState.currentUser?.id}/getActiveSOPs',
+      '/${appState.currentUser?.id}/${appState.isAdmin == true ? 'getActiveSOPs' : 'getAllActiveAssignedSOPs'}',
     );
     return (response.data as List)
         .map((workJson) => Work.fromJson(workJson))

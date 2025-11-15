@@ -1,3 +1,4 @@
+import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/providers/theme_provider.dart';
 import 'package:fidraops_app/view/widgets/profile_button.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    position ?? 'Manager',
+                    position ?? (context.read<AppState>().isAdmin == true ? 'Manager' : 'Employee'),
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 20
@@ -57,21 +58,28 @@ class ProfilePage extends StatelessWidget {
                     'Organisation',
                     style: Theme.of(context).textTheme.bodySmall
                   ),
-                  ProfileButton(
+                  if (context.read<AppState>().isAdmin == true) ProfileButton(
                     icon: LucideIcons.creditCard,
                     name: 'Billing & Plans',
                     onTap:() {},
                   ),
-                  ProfileButton(
+                  if (context.read<AppState>().isAdmin == true) ProfileButton(
                     icon: LucideIcons.usersRound,
                     name: 'Users',
                     onTap:() {},
                   ),
-                  ProfileButton(
+                  if (context.read<AppState>().isAdmin == true) ProfileButton(
                     icon: LucideIcons.settings,
                     name: 'Settings',
                     onTap:() {},
                   ),
+                  if (context.read<AppState>().isAdmin == false) Text(
+                    'Part of a team managed by your organization admin.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                    ),
+                  )
                 ],
               ),
               Column(
@@ -91,7 +99,7 @@ class ProfilePage extends StatelessWidget {
                     icon: LucideIcons.logOut,
                     name: 'Logout',
                     color: Colors.red,
-                    onTap:() {},
+                    onTap:() => context.read<AppState>().setUnauthenticated(),
                   ),
                 ],
               ),
