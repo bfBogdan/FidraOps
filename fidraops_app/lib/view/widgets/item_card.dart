@@ -171,6 +171,8 @@ class ItemCard extends StatelessWidget {
                   // TODO: delete logic
                 },
               ),
+
+              const SizedBox(height: 100),
             ],
           ),
         );

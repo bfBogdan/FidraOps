@@ -68,23 +68,21 @@ class _BottomNavBarState extends State<BottomNavBar>
 
   @override
   Widget build(BuildContext context) {
-    // Height of the whole bottom area (bar + space for radial menu)
     const double totalHeight = 140.0;
     const double barPaddingBottom = 16.0;
 
-    // Define your radial items here (like before)
     final radialItems = <RadialItem>[
       RadialItem(
         icon: LucideIcons.folderKanban,
-        onTap: () => widget.onTap(1), // Projects
+        onTap: () => widget.onTap(1),
       ),
       RadialItem(
         icon: LucideIcons.clipboardList,
-        onTap: () {}, // Inventory
+        onTap: () => widget.onTap(2),
       ),
       RadialItem(
         icon: LucideIcons.box,
-        onTap: () => widget.onTap(2),
+        onTap: () => widget.onTap(3),
       ),
     ];
 
@@ -94,7 +92,6 @@ class _BottomNavBarState extends State<BottomNavBar>
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          // PILL NAVBAR AT THE BOTTOM
           Positioned(
             left: 20,
             right: 20,
@@ -129,7 +126,7 @@ class _BottomNavBarState extends State<BottomNavBar>
 
                   // CENTER + BUTTON
                   GestureDetector(
-                    behavior: HitTestBehavior.opaque,
+                    behavior: HitTestBehavior.translucent,
                     onTap: _toggleMenu,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -154,22 +151,21 @@ class _BottomNavBarState extends State<BottomNavBar>
 
                   _NavItem(
                     icon: LucideIcons.bell,
-                    active: widget.currentIndex == 3,
-                    onTap: () => widget.onTap(3),
+                    active: widget.currentIndex == 4,
+                    onTap: () => widget.onTap(4),
                   ),
                   _NavItem(
                     icon: LucideIcons.circleUserRound,
-                    active: widget.currentIndex == 4,
-                    onTap: () => widget.onTap(4),
+                    active: widget.currentIndex == 5,
+                    onTap: () => widget.onTap(5),
                   ),
                 ],
               ),
             ),
           ),
 
-          // RADIAL MENU ABOVE THE BAR (NO OVERLAY)
           Positioned(
-            bottom: barPaddingBottom + 40, // ~40px above bar
+            bottom: barPaddingBottom + 40,
             left: 0,
             right: 0,
             child: IgnorePointer(
@@ -205,10 +201,11 @@ class _BottomNavBarState extends State<BottomNavBar>
 
                         return Transform.translate(
                           offset: offset,
+                          transformHitTests: true,
                           child: Opacity(
                             opacity: (_anim.value.isNaN ? 0.0 : _anim.value.clamp(0.0, 1.0)),
                             child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
+                              behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 _handleRadialTap(i, radialItems[i].onTap);
                               },
