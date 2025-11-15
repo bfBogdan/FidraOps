@@ -1,9 +1,11 @@
 import 'package:fidraops_app/view/widgets/project_card.dart';
 import 'package:flutter/material.dart';
+import 'package:../../data/repositories/project_repository.dart';
 
 class ProjectsPage extends StatelessWidget {
   const ProjectsPage({super.key});
 
+  ProjectRepository get projectRepository => ProjectRepository();
   List<Map<String, dynamic>> get projects => [
         {
           'title': 'Alpha',
@@ -33,6 +35,33 @@ class ProjectsPage extends StatelessWidget {
               child: Text(
                 'Projects',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                projectRepository.fetchProjects(context.read<HttpService>(), context.read<AppState>());
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.lightGreen,
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x29000000),
+                      offset: Offset(0, 2),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  LucideIcons.plus,
+                  size: 32,
+                  color: Theme.of(context).colorScheme.surface,
+                ),
               ),
             ),
             Expanded(
