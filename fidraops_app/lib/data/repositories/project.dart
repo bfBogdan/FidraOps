@@ -10,6 +10,7 @@ class ProjectRepository {
     final response = await httpService.dbGet(
       '/${appState.currentUser?.id}/getProjects',
     );
+    print(response.data as List);
     return (response.data as List)
         .map(
           (projectJson) =>
