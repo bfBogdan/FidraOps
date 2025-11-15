@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
-  final String name;
-  final String category;
+  final int id;
+  final String title;
   final int quantity;
+  final String? category;
   final Color color;
   final IconData? icon;
 
   const ItemCard({
     super.key,
-    required this.name,
-    required this.category,
+    required this.id,
+    required this.title,
     required this.quantity,
+    required this.category,
     required this.color,
     this.icon,
   });
@@ -63,7 +65,7 @@ class ItemCard extends StatelessWidget {
                     icon ?? Icons.question_mark_rounded,
                     size: 30,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  )
+                  ),
                 ),
               ),
               const SizedBox(width: 16),
@@ -71,7 +73,7 @@ class ItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    title,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -127,8 +129,10 @@ class ItemCard extends StatelessWidget {
 
               // Edit
               ListTile(
-                leading: Icon(Icons.edit_rounded,
-                    color: Theme.of(context).colorScheme.primary),
+                leading: Icon(
+                  Icons.edit_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 title: const Text("Edit item"),
                 onTap: () {
                   Navigator.pop(context);
@@ -139,8 +143,10 @@ class ItemCard extends StatelessWidget {
 
               // Change Quantity
               ListTile(
-                leading: Icon(Icons.numbers_rounded,
-                    color: Theme.of(context).colorScheme.primary),
+                leading: Icon(
+                  Icons.numbers_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 title: const Text("Change quantity"),
                 onTap: () {
                   Navigator.pop(context);
@@ -151,13 +157,13 @@ class ItemCard extends StatelessWidget {
 
               // Delete
               ListTile(
-                leading: Icon(Icons.delete_rounded,
-                    color: Theme.of(context).colorScheme.error),
+                leading: Icon(
+                  Icons.delete_rounded,
+                  color: Theme.of(context).colorScheme.error,
+                ),
                 title: Text(
                   "Delete",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
                 onTap: () {
                   Navigator.pop(context);

@@ -18,7 +18,6 @@ class HttpService {
     return '/$userType/${appState.organizationId}/$cleanPath';
   }
 
-  /// Performs a GET request prefixed with the user's database.
   Future<Response> dbGet(
     String path, {
     Map<String, dynamic>? queryParameters,
@@ -31,7 +30,6 @@ class HttpService {
     );
   }
 
-  /// Performs a POST request prefixed with the user's database.
   Future<Response> dbPost(
     String path, {
     dynamic data,
@@ -46,7 +44,6 @@ class HttpService {
     );
   }
 
-  /// Performs a PUT request prefixed with the user's database.
   Future<Response> dbPut(
     String path, {
     dynamic data,
@@ -61,7 +58,6 @@ class HttpService {
     );
   }
 
-  /// Performs a DELETE request prefixed with the user's database.
   Future<Response> dbDelete(
     String path, {
     dynamic data,
