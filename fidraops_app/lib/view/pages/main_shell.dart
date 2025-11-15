@@ -1,4 +1,5 @@
 import 'package:fidraops_app/providers/bottom_navbar_provider.dart';
+import 'package:fidraops_app/view/pages/calendar_page.dart';
 import 'package:fidraops_app/view/pages/home_page.dart';
 import 'package:fidraops_app/view/pages/inventory_page.dart';
 import 'package:fidraops_app/view/pages/notifications_page.dart';
@@ -20,6 +21,7 @@ class MainShell extends StatelessWidget {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   @override
@@ -33,14 +35,15 @@ class MainShell extends StatelessWidget {
             index: nav.index,
             children: [
               TabNavigator(navigatorKey: navKeys[0], child: HomePage()),
-              TabNavigator(navigatorKey: navKeys[1], child: ProjectsPage()),
-              TabNavigator(navigatorKey: navKeys[2], child: WorkPage()),
-              TabNavigator(navigatorKey: navKeys[3], child: InventoryPage()),
+              TabNavigator(navigatorKey: navKeys[1], child: CalendarPage()),
+              TabNavigator(navigatorKey: navKeys[2], child: ProjectsPage()),
+              TabNavigator(navigatorKey: navKeys[3], child: WorkPage()),
+              TabNavigator(navigatorKey: navKeys[4], child: InventoryPage()),
               TabNavigator(
-                navigatorKey: navKeys[4],
+                navigatorKey: navKeys[5],
                 child: NotificationsPage(),
               ),
-              TabNavigator(navigatorKey: navKeys[5], child: ProfilePage()),
+              TabNavigator(navigatorKey: navKeys[6], child: ProfilePage()),
             ],
           ),
 

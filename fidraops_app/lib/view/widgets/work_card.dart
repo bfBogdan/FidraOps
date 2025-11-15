@@ -95,7 +95,7 @@ class WorkCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '${work.requiredAssigneeNumber} assignees required',
+                        '${work.assignees.length} assigned',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,

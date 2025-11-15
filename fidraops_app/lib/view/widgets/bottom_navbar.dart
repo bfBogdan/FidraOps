@@ -74,15 +74,15 @@ class _BottomNavBarState extends State<BottomNavBar>
     final radialItems = <RadialItem>[
       RadialItem(
         icon: LucideIcons.folderKanban,
-        onTap: () => widget.onTap(1),
-      ),
-      RadialItem(
-        icon: LucideIcons.clipboardList,
         onTap: () => widget.onTap(2),
       ),
       RadialItem(
-        icon: LucideIcons.box,
+        icon: LucideIcons.clipboardList,
         onTap: () => widget.onTap(3),
+      ),
+      RadialItem(
+        icon: LucideIcons.box,
+        onTap: () => widget.onTap(4),
       ),
     ];
 
@@ -120,8 +120,8 @@ class _BottomNavBarState extends State<BottomNavBar>
                   ),
                   _NavItem(
                     icon: LucideIcons.calendarRange,
-                    active: widget.currentIndex == 100,
-                    onTap: () {},
+                    active: widget.currentIndex == 1,
+                    onTap: () => widget.onTap(1),
                   ),
 
                   // CENTER + BUTTON
@@ -151,13 +151,13 @@ class _BottomNavBarState extends State<BottomNavBar>
 
                   _NavItem(
                     icon: LucideIcons.bell,
-                    active: widget.currentIndex == 4,
-                    onTap: () => widget.onTap(4),
+                    active: widget.currentIndex == 5,
+                    onTap: () => widget.onTap(5),
                   ),
                   _NavItem(
                     icon: LucideIcons.circleUserRound,
-                    active: widget.currentIndex == 5,
-                    onTap: () => widget.onTap(5),
+                    active: widget.currentIndex == 6,
+                    onTap: () => widget.onTap(6),
                   ),
                 ],
               ),
