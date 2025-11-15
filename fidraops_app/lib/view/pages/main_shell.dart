@@ -5,18 +5,19 @@ import 'package:fidraops_app/view/pages/notifications_page.dart';
 import 'package:fidraops_app/view/pages/profile_page.dart';
 import 'package:fidraops_app/view/pages/projects_page.dart';
 import 'package:fidraops_app/view/widgets/bottom_navbar.dart';
+import 'package:fidraops_app/view/widgets/tab_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainShell extends StatelessWidget {
-  const MainShell({super.key});
+  MainShell({super.key});
 
-  final List<Widget> pages = const [
-    HomePage(),
-    ProjectsPage(),
-    InventoryPage(),
-    NotificationsPage(),
-    ProfilePage(),
+  final navKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   @override
@@ -26,14 +27,21 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Main content
-          pages[nav.index],
+          IndexedStack(
+            index: nav.index,
+            children: [
+              TabNavigator(navigatorKey: navKeys[0], child: HomePage()),
+              TabNavigator(navigatorKey: navKeys[1], child: ProjectsPage()),
+              TabNavigator(navigatorKey: navKeys[2], child: InventoryPage()),
+              TabNavigator(navigatorKey: navKeys[3], child: NotificationsPage()),
+              TabNavigator(navigatorKey: navKeys[4], child: ProfilePage()),
+            ],
+          ),
 
-          // Floating navbar
           Positioned(
             left: 0,
             right: 0,
-            bottom: 20, // Distance from bottom
+            bottom: 20,
             child: Center(
               child: BottomNavBar(
                 currentIndex: nav.index,
@@ -42,7 +50,7 @@ class MainShell extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      )
     );
   }
 }

@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class ItemCard extends StatelessWidget {
-  final String name;
-  final String category;
-  final int quantity;
-  final Color color;
-  final IconData? icon;
+class SOPCard extends StatelessWidget {
+  final Map<String, dynamic> sop;
 
-  const ItemCard({
+  const SOPCard({
     super.key,
-    required this.name,
-    required this.category,
-    required this.quantity,
-    required this.color,
-    this.icon,
+    required this.sop,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(23),
@@ -31,7 +25,6 @@ class ItemCard extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Stack(
         children: [
           Positioned(
@@ -39,7 +32,7 @@ class ItemCard extends StatelessWidget {
             right: 0,
             child: IconButton(
               onPressed: () {
-                _showItemMenu(context);
+                _showSOPMenu(context);
               },
               icon: Icon(
                 Icons.more_vert_rounded,
@@ -48,49 +41,81 @@ class ItemCard extends StatelessWidget {
             ),
           ),
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Center(
-                  child: Icon(
-                    icon ?? Icons.question_mark_rounded,
-                    size: 30,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  )
-                ),
-              ),
-              const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                spacing: 8,
                 children: [
+                  Icon(
+                    LucideIcons.workflow,
+                    size: 28,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   Text(
-                    name,
+                    sop['title'],
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
                     ),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                spacing: 8,
+                children: [
+                  Icon(
+                    LucideIcons.fileText,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   Text(
-                    'Category: $category',
+                    sop['description'],
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+              SizedBox(height: 6),
+              Row(
+                spacing: 8,
+                children: [
+                  Icon(
+                    LucideIcons.usersRound,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   Text(
-                    'Quantity: $quantity',
+                    '${sop['required_assignee_number']} assignees required',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+              SizedBox(height: 6),
+              Row(
+                spacing: 8,
+                children: [
+                  Icon(
+                    LucideIcons.timer,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  Text(
+                    '${sop['time_estimation_minutes']} minutes estimated',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                    softWrap: true,
                   ),
                 ],
               ),
@@ -101,7 +126,7 @@ class ItemCard extends StatelessWidget {
     );
   }
 
-  void _showItemMenu(BuildContext context) {
+  void _showSOPMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -129,23 +154,11 @@ class ItemCard extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.edit_rounded,
                     color: Theme.of(context).colorScheme.primary),
-                title: const Text("Edit item"),
+                title: const Text("Edit SOP"),
                 onTap: () {
                   Navigator.pop(context);
-                  print("EDIT ITEM");
+                  print("EDIT SOP");
                   // TODO: open your edit screen
-                },
-              ),
-
-              // Change Quantity
-              ListTile(
-                leading: Icon(Icons.numbers_rounded,
-                    color: Theme.of(context).colorScheme.primary),
-                title: const Text("Change quantity"),
-                onTap: () {
-                  Navigator.pop(context);
-                  print("CHANGE QUANTITY");
-                  // TODO: open change quantity dialog
                 },
               ),
 
@@ -161,11 +174,11 @@ class ItemCard extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  print("DELETE ITEM");
+                  print("DELETE SOP");
                   // TODO: delete logic
                 },
               ),
-
+              
               const SizedBox(height: 100),
             ],
           ),
