@@ -10,7 +10,6 @@ class InventoryRepository {
     final response = await httpService.dbGet(
       '/${appState.currentUser?.id}/getInventory',
     );
-    print(response.data as List);
     return (response.data as List)
         .map(
           (itemJson) =>

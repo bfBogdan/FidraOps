@@ -15,13 +15,17 @@ class SOPProvider with ChangeNotifier {
   List<SOP> get sops => _sops;
   String? get error => _error;
 
-  Future<void> fetchSOPs(HttpService httpService, AppState appState) async {
+  Future<void> fetchSOPs(
+    HttpService httpService,
+    AppState appState,
+    int projectId,
+  ) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      _sops = await _sopRepository.fetchSOPs(httpService, appState);
+      _sops = await _sopRepository.fetchSOPs(httpService, appState, projectId);
     } catch (e) {
       _error = e.toString();
     }

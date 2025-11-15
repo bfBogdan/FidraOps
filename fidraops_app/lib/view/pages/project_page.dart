@@ -16,9 +16,12 @@ class ProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>
-          SOPProvider()
-            ..fetchSOPs(context.read<HttpService>(), context.read<AppState>()),
+      create: (context) => SOPProvider()
+        ..fetchSOPs(
+          context.read<HttpService>(),
+          context.read<AppState>(),
+          project.id,
+        ),
       child: Builder(
         builder: (context) {
           final sopProvider = context.watch<SOPProvider>();
@@ -204,6 +207,7 @@ class ProjectPage extends StatelessWidget {
                       onRefresh: () => sopProvider.fetchSOPs(
                         context.read<HttpService>(),
                         context.read<AppState>(),
+                        project.id,
                       ),
                       child: sopProvider.isLoading
                           ? const Center(child: CircularProgressIndicator())

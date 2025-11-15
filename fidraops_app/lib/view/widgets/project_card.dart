@@ -10,8 +10,10 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:() {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProjectPage(project: project)));
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => ProjectPage(project: project)),
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),

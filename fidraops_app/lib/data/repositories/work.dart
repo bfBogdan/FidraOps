@@ -1,18 +1,17 @@
-import 'package:fidraops_app/data/models/sop.dart';
+import 'package:fidraops_app/data/models/work.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 
-class SOPRepository {
-  Future<List<SOP>> fetchSOPs(
+class WorkRepository {
+  Future<List<Work>> fetchActiveSOPs(
     HttpService httpService,
     AppState appState,
-    int projectId,
   ) async {
     final response = await httpService.dbGet(
-      '/${appState.currentUser?.id}/$projectId/getProjectSOPs',
+      '/${appState.currentUser?.id}/getActiveSOPs',
     );
     return (response.data as List)
-        .map((sopJson) => SOP.fromJson(sopJson as Map<String, dynamic>))
+        .map((workJson) => Work.fromJson(workJson))
         .toList();
   }
 }
