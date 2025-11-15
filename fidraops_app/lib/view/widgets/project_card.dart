@@ -58,7 +58,7 @@ class ProjectCard extends StatelessWidget {
                   Text(
                     project.title,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                     softWrap: true,
@@ -66,9 +66,10 @@ class ProjectCard extends StatelessWidget {
                   Text(
                     project.description ?? 'No description provided.',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
+                    maxLines: 2,
                     softWrap: true,
                   ),
                 ],

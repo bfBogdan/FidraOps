@@ -1,7 +1,9 @@
+import 'package:fidraops_app/data/models/inventory_item.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/providers/inventory.dart';
 import 'package:fidraops_app/view/widgets/item_card.dart';
+import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +41,7 @@ class InventoryPage extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => showCreateInventoryItemForm(context),
                           child: Container(
                             width: 40,
                             height: 40,
@@ -97,10 +99,7 @@ class InventoryPage extends StatelessWidget {
                                     horizontal: 20,
                                   ),
                                   child: ItemCard(
-                                    id: item.id,
-                                    title: item.title,
-                                    category: item.category,
-                                    quantity: item.quantity,
+                                    item: item,
                                     color:
                                         Colors.primaries[index %
                                             Colors.primaries.length],
@@ -115,6 +114,28 @@ class InventoryPage extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void showCreateInventoryItemForm(BuildContext context) {
+    final nameController = TextEditingController();
+    final quantityController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Create Inventory Item",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
+          SizedBox(height: 12),
+          TextField(decoration: InputDecoration(labelText: "Quantity"), controller: quantityController, keyboardType: TextInputType.number),
+        ],
+        onSubmit: () {
+          print("Item: ${nameController.text}");
+          print("Quantity: ${quantityController.text}");
+        },
+        formType: PopupFormType.edit,
       ),
     );
   }

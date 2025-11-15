@@ -2,6 +2,7 @@ import 'package:fidraops_app/data/models/project.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/providers/sop.dart';
+import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/view/widgets/sop_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -65,7 +66,7 @@ class ProjectPage extends StatelessWidget {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () => showCreateSOPForm(context),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   vertical: 5,
@@ -236,6 +237,27 @@ class ProjectPage extends StatelessWidget {
     );
   }
 
+  void showCreateSOPForm(BuildContext context) {
+    final nameController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Create SOP",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "SOP Name"), controller: nameController),
+          SizedBox(height: 12),
+          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+        ],
+        onSubmit: () {
+          print("SOP: ${nameController.text}");
+          print("Description: ${descriptionController.text}");
+        },
+      ),
+    );
+  }
+
   void _showProjectMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -269,8 +291,7 @@ class ProjectPage extends StatelessWidget {
                 title: const Text("Edit project"),
                 onTap: () {
                   Navigator.pop(context);
-                  print("EDIT PROJECT");
-                  // TODO: open your edit screen
+                  showEditProjectForm(context, project);
                 },
               ),
 
@@ -286,8 +307,7 @@ class ProjectPage extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  print("DELETE PROJECT");
-                  // TODO: delete logic
+                  showDeleteProjectForm(context, project);
                 },
               ),
 
@@ -296,6 +316,46 @@ class ProjectPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void showEditProjectForm(BuildContext context, Project project) {
+    final nameController = TextEditingController(text: project.title);
+    final descriptionController = TextEditingController(text: project.description);
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Edit Project",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Project Name"), controller: nameController),
+          SizedBox(height: 12),
+          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+        ],
+        onSubmit: () {
+          print("Project: ${nameController.text}");
+          print("Description: ${descriptionController.text}");
+        },
+        formType: PopupFormType.edit,
+      ),
+    );
+  }
+
+  void showDeleteProjectForm(BuildContext context, Project project) {
+    final nameController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Delete Project",
+        fields: [],
+        onSubmit: () {
+          print("Project: ${nameController.text}");
+          print("Description: ${descriptionController.text}");
+        },
+        formType: PopupFormType.delete,
+      ),
     );
   }
 }

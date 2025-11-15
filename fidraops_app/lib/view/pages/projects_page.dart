@@ -1,8 +1,10 @@
 import 'package:fidraops_app/providers/project.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
+import 'package:fidraops_app/view/widgets/popup_form.dart';
 import 'package:fidraops_app/view/widgets/project_card.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 class ProjectsPage extends StatelessWidget {
@@ -25,14 +27,48 @@ class ProjectsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Projects',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Projects',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => showCreateProjectForm(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 15,
+                            ),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.lightGreen,
+                              borderRadius: BorderRadius.circular(23),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x29000000),
+                                  offset: Offset(0, 2),
+                                  blurRadius: 8,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              LucideIcons.plus,
+                              size: 32,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surface,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -75,6 +111,27 @@ class ProjectsPage extends StatelessWidget {
               ),
             ),
           );
+        },
+      ),
+    );
+  }
+
+  void showCreateProjectForm(BuildContext context) {
+    final nameController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => PopupForm(
+        title: "Create Project",
+        fields: [
+          TextField(decoration: InputDecoration(labelText: "Project Name"), controller: nameController),
+          SizedBox(height: 12),
+          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+        ],
+        onSubmit: () {
+          print("Project: ${nameController.text}");
+          print("Description: ${descriptionController.text}");
         },
       ),
     );
