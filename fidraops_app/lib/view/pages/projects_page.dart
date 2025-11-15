@@ -3,7 +3,6 @@ import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
 import 'package:fidraops_app/view/widgets/project_card.dart';
 import 'package:flutter/material.dart';
-// import 'package:lucide_icons_flutter/lucide_icons.dart'; // No longer needed
 import 'package:provider/provider.dart';
 
 class ProjectsPage extends StatelessWidget {
