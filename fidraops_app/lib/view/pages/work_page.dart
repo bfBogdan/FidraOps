@@ -30,39 +30,17 @@ class WorkPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Scheduled work',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                  ),
-                  GestureDetector(
-                    onTap: () => showCreateWorkForm(context),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.lightGreen,
-                        shape: BoxShape.circle,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x29000000),
-                            offset: Offset(0, 2),
-                            blurRadius: 8,
-                            spreadRadius: 0,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'Scheduled work',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => showCreateWorkForm(context),
                           child: Container(
                             width: 40,
                             height: 40,
@@ -76,16 +54,16 @@ class WorkPage extends StatelessWidget {
                                   offset: Offset(0, 2),
                                   blurRadius: 8,
                                   spreadRadius: 0,
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              LucideIcons.plus,
-                              size: 32,
-                              color: Theme.of(context).colorScheme.surface,
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                LucideIcons.plus,
+                                size: 32,
+                                color: Theme.of(context).colorScheme.surface,
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -118,7 +96,7 @@ class WorkPage extends StatelessWidget {
                                       //   MaterialPageRoute(builder: (_) => ProjectPage(project: projects[index])),
                                       // );
                                     },
-                                    child: WorkCard(work: work.toJson()),
+                                    child: WorkCard(work: work),
                                   ),
                                 );
                               },

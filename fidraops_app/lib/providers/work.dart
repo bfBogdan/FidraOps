@@ -36,6 +36,7 @@ class WorkProvider with ChangeNotifier {
     try {
       _works = await _workRepository.fetchActiveSOPs(httpService, appState);
     } catch (e) {
+      print("Error fetching SOPs: $e");
       _error = e.toString();
     }
     _isLoading = false;

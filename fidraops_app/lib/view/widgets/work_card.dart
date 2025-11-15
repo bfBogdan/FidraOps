@@ -1,8 +1,9 @@
+import 'package:fidraops_app/data/models/work.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class WorkCard extends StatelessWidget {
-  final Map<String, dynamic> work;
+  final Work work;
 
   const WorkCard({super.key, required this.work});
 
@@ -52,7 +53,7 @@ class WorkCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        work['title'],
+                        work.title,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -73,7 +74,7 @@ class WorkCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        work['description'],
+                        work.description,
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -94,7 +95,7 @@ class WorkCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '${work['required_assignee_number']} assignees required',
+                        '${work.requiredAssigneeNumber} assignees required',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -115,7 +116,7 @@ class WorkCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '${work['time_estimation_minutes']} minutes estimated',
+                        '${work.timeEstimateMinutes} minutes estimated',
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -3,7 +3,7 @@ class Work {
   final int projectId;
   final String title;
   final String description;
-  final int requierdAssigneeNumber;
+  final int requiredAssigneeNumber;
   final List<int> assignees;
   final int timeEstimateMinutes;
   final List<int> requiredEquipment;
@@ -17,7 +17,7 @@ class Work {
     required this.projectId,
     required this.title,
     required this.description,
-    required this.requierdAssigneeNumber,
+    required this.requiredAssigneeNumber,
     required this.assignees,
     required this.timeEstimateMinutes,
     required this.requiredEquipment,
@@ -28,15 +28,40 @@ class Work {
   });
 
   factory Work.fromJson(Map<String, dynamic> json) {
+    List<int> parseIntList(dynamic raw) {
+      try {
+        if (raw == null) return [];
+
+        if (raw is List<int>) return raw;
+
+        if (raw is List) {
+          return raw
+              .map((e) => int.tryParse(e.toString()) ?? 0)
+              .toList();
+        }
+
+        if (raw is String) {
+          return raw
+              .split(',')
+              .map((e) => int.tryParse(e.trim()) ?? 0)
+              .toList();
+        }
+
+        return [];
+      } catch (_) {
+        return [];
+      }
+    }
+
     return Work(
       id: json['id'],
       projectId: json['project_id'],
       title: json['title'],
       description: json['description'],
-      requierdAssigneeNumber: json['required_assignee_number'],
-      assignees: List<int>.from(json['users_id']),
+      requiredAssigneeNumber: json['required_assignee_number'],
+      assignees: parseIntList(json['users_id']),
       timeEstimateMinutes: json['time_estimation_minutes'],
-      requiredEquipment: List<int>.from(json['required_equipments']),
+      requiredEquipment: parseIntList(json['required_equipments']),
       organisationId: json['organisation_id'],
       createdAt: DateTime.parse(json['created_at']),
       startTimeStamp: DateTime.parse(json['start_timestamp']),
@@ -50,7 +75,7 @@ class Work {
       'project_id': projectId,
       'title': title,
       'description': description,
-      'required_assignee_number': requierdAssigneeNumber,
+      'required_assignee_number': requiredAssigneeNumber,
       'users_id': assignees,
       'time_estimation_minutes': timeEstimateMinutes,
       'required_equipments': requiredEquipment,
