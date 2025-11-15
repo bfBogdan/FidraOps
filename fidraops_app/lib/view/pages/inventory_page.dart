@@ -1,5 +1,4 @@
 import 'package:fidraops_app/view/widgets/item_card.dart';
-import 'package:fidraops_app/view/widgets/project_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 

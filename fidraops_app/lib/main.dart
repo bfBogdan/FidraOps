@@ -23,7 +23,6 @@ void main() {
       organizationId: 1,
       isAdmin: true,
     ),
-    1,
   );
   HttpService httpService = HttpService(appState);
 

@@ -16,10 +16,9 @@ class UserRepository {
       );
 
       User user = User.fromJson(response.data['user']);
-      int organizationId = response.data['organizationId'];
 
       if (response.statusCode == 200) {
-        appState.setAuthenticated(user, organizationId);
+        appState.setAuthenticated(user);
       } else {
         throw Exception('Login failed');
       }
