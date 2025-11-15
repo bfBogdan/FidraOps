@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 //import userAuthRoute from "./routes/userAuth";
 import organisationAdminInfo from "./routes/organisation_admin"
 import organisationUserInfo from "./routes/organisation_user"
+import userAuthRoute from "./routes/userAuth"
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 
 // -- API ROUTES --
 // for authentification of the user
-//app.use("/auth", userAuthRoute);
+app.use("/auth", userAuthRoute);
 
 // for all operations inside an organisation
 app.use("/adminOrg", organisationAdminInfo);

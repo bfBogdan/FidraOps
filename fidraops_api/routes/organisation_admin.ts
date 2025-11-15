@@ -25,7 +25,7 @@ router.post("/:orgId/:adminId/:sopId/activateSOP", adminController.activateSOP);
 // - projects endpoints -
 router.get("/:orgId/:adminId/getProjects", adminController.getAllProjects);
 router.post("/:orgId/:adminId/createProject", adminController.createProject);
-router.delete("/:orgId/:projectId/deleteProject", adminController.deleteProject);
+router.delete("/:orgId/:adminId/:projectId/deleteProject", adminController.deleteProject);
 
 // - inventory endpoints -
 router.get("/:orgId/:adminId/getInventory", adminController.getAllInventory);

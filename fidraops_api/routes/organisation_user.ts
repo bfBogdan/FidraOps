@@ -10,8 +10,6 @@ router.get("/:orgId/:userId/getUser", usersController.getUser);
 router.get("/:orgId/:userId/getAllActiveAssignedSOPs", usersController.getAllActiveAssignedSOPs);
 router.get("/:orgId/:userId/:sopId/getActiveAssignedSOPTasks", usersController.getActiveAssignedSOPTasks);
 
-router.post("/:orgId/:userId/:sopId/:startTimestamp/:usersIdArray/activateSOP", usersController.activateSOP);
-
 // - inventory endpoints -
 router.get("/:orgId/:userId/:itemsIdArray/getInventoryOfAssignedActiveSOP", usersController.getInventoryOfAssignedActiveSOP);
 

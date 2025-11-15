@@ -89,22 +89,3 @@ export const getInventoryOfAssignedActiveSOP = async (req: Request, res: Respons
         res.status(403).json({ error: 'Not a valid user!' });
     }
 };
-
-export const activateSOP = async (req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId);
-    const sopId = req.params.sopId;
-    const startTimestamp = req.params.startTimestamp;
-    const usersIdArray = req.params.usersIdArray;
-
-    if (await checkIfUser(userId)) {
-        try {
-            const result: QueryResult = await pool.query('SELECT * FROM sop WHERE id = $1',[sopId]);
-            res.json(result.rows);
-        } catch (error: any) {
-            console.error('Error fetching user:', error);
-            res.status(500).json({ error: 'Internal server error' });
-        }
-    } else {
-        res.status(403).json({ error: 'Not a valid user!' });
-    }
-};
