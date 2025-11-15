@@ -6,6 +6,16 @@ import 'package:flutter/material.dart';
 
 class ProjectProvider with ChangeNotifier {
   final ProjectRepository _projectRepository = ProjectRepository();
+  late final HttpService _httpService;
+  late final AppState _appState;
+
+  ProjectProvider({
+    required HttpService httpService,
+    required AppState appState,
+  }) {
+    _httpService = httpService;
+    _appState = appState;
+  }
 
   bool _isLoading = false;
   List<Project> _projects = [];
@@ -23,13 +33,16 @@ class ProjectProvider with ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> fetchProjects(HttpService httpService, AppState appState) async {
+  Future<void> fetchProjects() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      _projects = await _projectRepository.fetchProjects(httpService, appState);
+      _projects = await _projectRepository.fetchProjects(
+        _httpService,
+        _appState,
+      );
     } catch (e) {
       _error = e.toString();
     }
@@ -37,6 +50,30 @@ class ProjectProvider with ChangeNotifier {
 
     if (!_isDisposed) {
       notifyListeners();
+    }
+  }
+
+  Future<void> createProject(Project project) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final newProject = await _projectRepository.createProject(
+        _httpService,
+        _appState,
+        project.toJson(),
+      );
+
+      await fetchProjects();
+    } catch (e) {
+      print('Error in createProject provider: $e');
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      if (!_isDisposed) {
+        notifyListeners();
+      }
     }
   }
 }

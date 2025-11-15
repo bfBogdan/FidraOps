@@ -1,3 +1,5 @@
+import 'package:fidraops_app/data/models/project.dart';
+import 'package:fidraops_app/data/repositories/project.dart';
 import 'package:fidraops_app/providers/project.dart';
 import 'package:fidraops_app/data/repositories/http_service.dart';
 import 'package:fidraops_app/providers/app_state.dart';
@@ -13,8 +15,10 @@ class ProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ProjectProvider()
-        ..fetchProjects(context.read<HttpService>(), context.read<AppState>()),
+      create: (context) => ProjectProvider(
+        httpService: context.read<HttpService>(),
+        appState: context.read<AppState>(),
+      )..fetchProjects(),
       child: Builder(
         builder: (context) {
           final projectProvider = context.watch<ProjectProvider>();
@@ -62,9 +66,7 @@ class ProjectsPage extends StatelessWidget {
                             child: Icon(
                               LucideIcons.plus,
                               size: 32,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.surface,
+                              color: Theme.of(context).colorScheme.surface,
                             ),
                           ),
                         ),
@@ -73,10 +75,7 @@ class ProjectsPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () => projectProvider.fetchProjects(
-                        context.read<HttpService>(),
-                        context.read<AppState>(),
-                      ),
+                      onRefresh: () => projectProvider.fetchProjects(),
                       child: projectProvider.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : projectProvider.error != null
@@ -99,9 +98,7 @@ class ProjectsPage extends StatelessWidget {
                                     vertical: 8,
                                     horizontal: 20,
                                   ),
-                                  child: ProjectCard(
-                                    project: item,
-                                  ),
+                                  child: ProjectCard(project: item),
                                 );
                               },
                             ),
@@ -116,22 +113,44 @@ class ProjectsPage extends StatelessWidget {
     );
   }
 
+  // In lib/view/pages/projects_page.dart
+
   void showCreateProjectForm(BuildContext context) {
-    final nameController = TextEditingController();
+    final titleController = TextEditingController();
     final descriptionController = TextEditingController();
+
+    final projectProvider = context.read<ProjectProvider>();
+    final httpService = context.read<HttpService>();
+    final appState = context.read<AppState>();
 
     showDialog(
       context: context,
       builder: (_) => PopupForm(
         title: "Create Project",
         fields: [
-          TextField(decoration: InputDecoration(labelText: "Project Name"), controller: nameController),
+          TextField(
+            decoration: InputDecoration(
+              labelText: "Project Title",
+            ), // Changed label
+            controller: titleController,
+          ),
           SizedBox(height: 12),
-          TextField(decoration: InputDecoration(labelText: "Description"), controller: descriptionController, minLines: 3, maxLines: 5),
+          TextField(
+            decoration: InputDecoration(labelText: "Description"),
+            controller: descriptionController,
+            minLines: 3,
+            maxLines: 5,
+          ),
         ],
-        onSubmit: () {
-          print("Project: ${nameController.text}");
-          print("Description: ${descriptionController.text}");
+        onSubmit: () async {
+          Project project = Project(
+            id: 0,
+            title: titleController.text,
+            description: descriptionController.text,
+            organisationId: appState.currentUser!.organizationId,
+          );
+
+          await projectProvider.createProject(project);
         },
       ),
     );

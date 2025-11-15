@@ -12,6 +12,7 @@ class Project {
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    print('Parsing Project from JSON: $json');
     return Project(
       id: json['id'] as int,
       title: json['title'] as String,

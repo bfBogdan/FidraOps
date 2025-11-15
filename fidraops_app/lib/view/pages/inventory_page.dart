@@ -14,8 +14,10 @@ class InventoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => InventoryProvider()
-        ..fetchInventory(context.read<HttpService>(), context.read<AppState>()),
+      create: (context) => InventoryProvider(
+        httpService: context.read<HttpService>(),
+        appState: context.read<AppState>(),
+      )..fetchInventory(),
       child: Builder(
         builder: (context) {
           final inventoryProvider = context.watch<InventoryProvider>();
@@ -70,10 +72,7 @@ class InventoryPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () => inventoryProvider.fetchInventory(
-                        context.read<HttpService>(),
-                        context.read<AppState>(),
-                      ),
+                      onRefresh: () => inventoryProvider.fetchInventory(),
                       child: inventoryProvider.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : inventoryProvider.error != null
@@ -119,7 +118,7 @@ class InventoryPage extends StatelessWidget {
   }
 
   void showCreateInventoryItemForm(BuildContext context) {
-    final nameController = TextEditingController();
+    final titleController = TextEditingController();
     final quantityController = TextEditingController();
     final items = <DropdownMenuItem<String>>[
       DropdownMenuItem(value: 'Category 1', child: Text('Category 1')),
@@ -128,20 +127,45 @@ class InventoryPage extends StatelessWidget {
     ];
     String? selectedCategory;
 
+    final inventoryProvider = context.read<InventoryProvider>();
+    final httpService = context.read<HttpService>();
+    final appState = context.read<AppState>();
+
     showDialog(
       context: context,
       builder: (_) => PopupForm(
         title: "Create Inventory Item",
         fields: [
-          TextField(decoration: InputDecoration(labelText: "Item Name"), controller: nameController),
+          TextField(
+            decoration: InputDecoration(labelText: "Item Name"),
+            controller: titleController,
+          ),
           SizedBox(height: 12),
-          TextField(decoration: InputDecoration(labelText: "Quantity"), controller: quantityController, keyboardType: TextInputType.number),
+          TextField(
+            decoration: InputDecoration(labelText: "Quantity"),
+            controller: quantityController,
+            keyboardType: TextInputType.number,
+          ),
           SizedBox(height: 12),
-          DropdownButton(items: items, onChanged: (value) { selectedCategory = value; }, value: selectedCategory, hint: Text("Select Category")),
+          DropdownButton(
+            items: items,
+            onChanged: (value) {
+              selectedCategory = value;
+            },
+            value: selectedCategory,
+            hint: Text("Select Category"),
+          ),
         ],
-        onSubmit: () {
-          print("Item: ${nameController.text}");
-          print("Quantity: ${quantityController.text}");
+        onSubmit: () async {
+          InventoryItem item = InventoryItem(
+            id: 0,
+            title: titleController.text,
+            quantity: int.tryParse(quantityController.text) ?? 0,
+            organisationId: appState.currentUser!.organizationId,
+            category: selectedCategory ?? 'Uncategorized',
+          );
+
+          await inventoryProvider.addInventoryItem(item);
         },
         formType: PopupFormType.edit,
       ),
